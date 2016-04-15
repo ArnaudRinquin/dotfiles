@@ -1,0 +1,45 @@
+"*":
+  "atom-beautify":
+    general:
+      _analyticsUserId: "18588940-c384-4ca7-8919-b5d897222d02"
+  core:
+    disabledPackages: [
+      "file-icons"
+    ]
+    themes: [
+      "atom-material-ui"
+      "oceanic-next"
+    ]
+  editor:
+    fontSize: 23
+    invisibles: {}
+    preferredLineLength: 100
+    showIndentGuide: true
+  "exception-reporting":
+    userId: "263e7c91-36d3-62ef-ebc7-d4b93e5be7a0"
+  "file-icons": {}
+  "language-babel": {}
+  linter: {}
+  "linter-eslint":
+    disableWhenNoEslintrcFileInPath: true
+  "markdown-preview":
+    breakOnSingleNewline: true
+    useGitHubStyle: true
+  minimap:
+    absoluteMode: true
+    plugins:
+      "find-and-replace": true
+      "find-and-replaceDecorationsZIndex": 0
+      "git-diff": true
+      "git-diffDecorationsZIndex": 0
+  react: {}
+  tabs: {}
+  "toggle-packages":
+    togglePackages: [
+      "zentabs"
+    ]
+  "tree-view":
+    squashDirectoryNames: true
+  welcome:
+    showOnStartup: false
+  zentabs: {}
