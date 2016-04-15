@@ -1,0 +1,26 @@
+alias he='heroku'
+alias hlogs='heroku logs'
+alias hreboot='heroku ps:restart 1'
+alias hrun='heroku run'
+
+alias l="ls -la"
+alias serv='python -m SimpleHTTPServer'
+
+alias git_current_branch='git rev-parse --abbrev-ref HEAD 2> /dev/null'
+alias git='hub'
+alias g='git'
+alias gst='git status -sb'
+alias gc='git commit'
+alias gc!='git commit --amend --reuse-message HEAD'
+alias gca!='git commit -a --amend --reuse-message HEAD'
+alias gb='git branch'
+alias ga='git add'
+alias ggpull='git pull --ff-only --rebase origin (git_current_branch)'
+alias ggpush='git push origin (git_current_branch)'
+alias gco='git checkout'
+alias gcm='git checkout master'
+alias gs='git stash'
+alias gsa='git stash --apply'
+
+alias tre='tree -L 2'
+alias atom='atom-beta'
