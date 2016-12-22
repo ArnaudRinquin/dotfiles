@@ -26,3 +26,7 @@ alias gs='git stash'
 alias gsa='git stash apply'
 
 alias tre='tree -L 2'
+
+alias dcb='docker-compose build'
+alias dcu='docker-compose up'
+alias dcbu='docker-compose build ; docker-compose up'
