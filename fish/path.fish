@@ -5,9 +5,9 @@ set -x PATH $PATH /usr/bin
 set -x PATH $PATH /usr/local/bin
 set -x PATH $PATH /usr/sbin
 set -x PATH $PATH /sbin
-set -x PATH $PATH /usr/X11/bin
+#set -x PATH $PATH /usr/X11/bin
 set -x PATH $PATH /usr/libexec
 set -x PATH $PATH /usr/local/sbin
-set -x PATH $PATH $GOPATH/bin
-set -x PATH $PATH $GOPATH/go_appengine
+#set -x PATH $PATH $GOPATH/bin
+#set -x PATH $PATH $GOPATH/go_appengine
 set -x PATH $PATH $HOME/projects/google-cloud-sdk/bin
