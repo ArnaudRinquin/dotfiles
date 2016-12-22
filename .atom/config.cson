@@ -18,6 +18,10 @@
     displayAboveSnippets: true
     useSnippets: true
   "autocomplete-modules":
+    vendors: [
+      "node_modules"
+      "src"
+    ]
     webpack: true
   core:
     disabledPackages: [
@@ -32,6 +36,7 @@
     ]
     useCustomTitleBar: true
   editor:
+    fontFamily: "Operator Mono"
     invisibles: {}
     preferredLineLength: 100
     scrollPastEnd: true
