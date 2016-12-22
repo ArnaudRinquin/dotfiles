@@ -29,6 +29,7 @@
       "react"
       "nuclide"
     ]
+    excludeVcsIgnoredPaths: false
     telemetryConsent: "limited"
     themes: [
       "atom-material-ui"
@@ -72,7 +73,7 @@
       "linter-eslint"
     ]
   "tree-view":
-    hideVcsIgnoredFiles: true
+    autoReveal: true
     squashDirectoryNames: true
   welcome:
     showOnStartup: false
