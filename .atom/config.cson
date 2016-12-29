@@ -29,7 +29,6 @@
       "react"
       "nuclide"
     ]
-    excludeVcsIgnoredPaths: false
     telemetryConsent: "limited"
     themes: [
       "atom-material-ui"
