@@ -12,5 +12,6 @@ set -x PATH $PATH /usr/local/sbin
 #set -x PATH $PATH $GOPATH/go_appengine
 set -x PATH $PATH $HOME/projects/google-cloud-sdk/bin
 set -x PATH $PATH $ANDROID_HOME/tools
+set -x PATH $PATH $TRANSPORT_PATH
 set -x PATH $PATH $ANDROID_HOME/platform-tools
 set -x PATH $HOME/.fastlane/bin $PATH
