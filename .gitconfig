@@ -11,7 +11,7 @@
 	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
  	rma = !sh -c \"git diff -z --name-only --diff-filter=D | xargs -0 git rm\"
 	undo-commit = reset --soft @^
-	pr = pull-request
+	cpr = pull-request -c
 	clrb = !sh -c \"git branch --merged | grep -v '*' | grep -v master | grep -v dev | xargs -n 1 git branch -d\"
 [help]
 	autocorrect = 1
@@ -19,3 +19,7 @@
 	helper = osxkeychain
 [push]
 	default = matching
+[merge]
+	conflictstyle = diff3
+[rebase]
+	autoStash = true
