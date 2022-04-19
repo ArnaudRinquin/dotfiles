@@ -4,3 +4,6 @@ source ~/projects/dotfiles/zsh/.aliases
 
 # FNM
 eval "$(fnm env --use-on-cd)"
+
+# Garden
+export GARDEN_USERNAME="arnaud"
