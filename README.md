@@ -1,12 +1,10 @@
-dotfiles
-========
+# dotfiles
 
 Ain't anything like home.
 
 ## First step
 
 _getting the projet in the right place_
-
 
 ```sh
 cd projects
@@ -19,7 +17,6 @@ cd dotfiles
 ```sh
 make link
 make brew
-sudo make fish # needs sudo has it changes /etc/shells
-make nvm
+make zsh
 make osx
 ```
