@@ -19,6 +19,9 @@
 	helper = osxkeychain
 [push]
 	default = matching
+[pull]
+	rebase = true
+	ff = only
 [merge]
 	conflictstyle = diff3
 [rebase]
