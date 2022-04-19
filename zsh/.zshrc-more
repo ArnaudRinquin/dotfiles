@@ -1,0 +1,6 @@
+# Path, aliases
+source ~/projects/dotfiles/zsh/.path
+source ~/projects/dotfiles/zsh/.aliases
+
+# FNM
+eval "$(fnm env --use-on-cd)"

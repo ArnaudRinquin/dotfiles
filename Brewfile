@@ -1,34 +1,29 @@
 brew 'cloc'
 brew 'cocoapods'
+brew "coreutils"
 brew 'curl'
-brew 'fish'
+brew 'fnm'
+brew 'gh'
 brew 'git'
+brew "gnupg"
 brew 'hub'
-brew 'kubernetes-helm'
-brew 'nvm'
-brew 'openssl'
 brew 'postgresql'
-brew 'python'
 brew 'stern'
 brew 'tree'
-brew 'watchman'
-brew 'yarn'
 
+cask "1password"
+cask "alfred"
+cask "docker"
+cask "google-cloud-sdk"
+cask "keepingyouawake"
+cask "linear"
+cask "loom"
+cask "signal"
+cask "slack"
+cask "slite"
+cask "spotify"
+cask "visual-studio-code"
+cask "zoom"
 
-
-tap 'caskroom/cask'
-
-cask '1password'
-cask 'alfred'
-cask 'android-studio
-cask 'docker'
-cask 'dropbox'
-cask 'fastlane'
-cask 'gitify'
-cask 'iterm2'
-cask 'java8'
-cask 'keepingyouawake'
-cask 'sketch'
-cask 'slack'
-cask 'the-unarchiver'
-cask 'visual-studio-code'
+tap "garden-io/garden"
+brew 'garden-cli'

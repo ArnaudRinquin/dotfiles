@@ -1,0 +1,18 @@
+function mkcd() {
+  mkdir -p "$1" && cd "$1";
+}
+
+alias gst="git status -sb"
+
+# GIT
+alias git='hub'
+alias gc!='git commit --amend --reuse-message HEAD'
+alias gca!='git commit -a --amend --reuse-message HEAD'
+alias ga="git add"
+alias ggpull='git pull --ff-only --rebase origin "$(git branch --show-current 2> /dev/null)"'
+alias ggpush='git push origin "$(git branch --show-current 2> /dev/null)"'
+alias gcm="git checkout master"
+
+alias tre="tree -L 2"
+
+alias kc="kubectl"
