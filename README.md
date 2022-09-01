@@ -15,8 +15,8 @@ cd dotfiles
 ## Run the make tasks
 
 ```sh
-make link
 make brew
+make link
 make zsh
 make osx
 ```
