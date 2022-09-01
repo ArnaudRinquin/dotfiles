@@ -14,6 +14,7 @@
 	undo-commit = reset --soft @^
 	cpr = pull-request -c
 	clrb = !sh -c \"git branch --merged | grep -v '*' | grep -v master | grep -v dev | xargs -n 1 git branch -d\"
+	rd = !git checkout develop && git pull origin develop && git checkout - && git rebase develop
 [help]
 	autocorrect = 1
 [credential]
