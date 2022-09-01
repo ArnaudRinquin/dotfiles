@@ -7,6 +7,7 @@
 [user]
 	name = Arnaud Rinquin
 	email = rinquin.arnaud@gmail.com
+	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEylDEocVQhDmS5R/fIit8jNrOScCaty9ModJq62wjn7
 [alias]
 	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
  	rma = !sh -c \"git diff -z --name-only --diff-filter=D | xargs -0 git rm\"
@@ -19,6 +20,7 @@
 	helper = osxkeychain
 [push]
 	default = matching
+	autoSetupRemote = true
 [pull]
 	rebase = true
 	ff = only
@@ -26,3 +28,7 @@
 	conflictstyle = diff3
 [rebase]
 	autoStash = true
+[commit]
+	gpgsign = true
+[gpg]
+	format = ssh
