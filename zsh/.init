@@ -6,4 +6,5 @@ source ~/projects/dotfiles/zsh/.aliases
 eval "$(fnm env --use-on-cd)"
 
 # Garden
+export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 export GARDEN_USERNAME="arnaud"
