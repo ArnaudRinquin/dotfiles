@@ -7,7 +7,7 @@ link:
 	@ln -s $(DIR)/.hushlogin ~
 
 .PHONY: zsh
-brew:
+zsh:
 	@echo "Installing zsh and oh-my-zsh"
 	@sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 	@echo "source ~/projects/dotfiles/zsh/.init" >> ~/.zshrc
