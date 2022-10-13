@@ -29,6 +29,8 @@
 	conflictstyle = diff3
 [rebase]
 	autoStash = true
+	updateRefs = true
+	autosquash = true
 [commit]
 	gpgsign = true
 [gpg]
