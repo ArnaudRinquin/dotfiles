@@ -22,3 +22,4 @@ brew:
 osx:
 	defaults write -g InitialKeyRepeat -int 10
 	defaults write -g KeyRepeat -int 2
+	defaults write com.apple.dock "mru-spaces" -bool "false" && killall Dock
