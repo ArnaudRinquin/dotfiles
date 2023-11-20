@@ -14,7 +14,7 @@
 	undo-commit = reset --soft @^
 	cpr = pull-request -c
 	clrb = !sh -c \"git branch --merged | grep -v '*' | grep -v master | grep -v dev | xargs -n 1 git branch -d\"
-	rd = !git checkout develop && git pull origin develop && git checkout - && git rebase develop
+	rd = !git fetch origin develop:develop && git rebase origin/develop
 [help]
 	autocorrect = 1
 [credential]
@@ -32,6 +32,8 @@
 	updateRefs = true
 	autosquash = true
 [commit]
-	gpgsign = true
+	#gpgsign = true
 [gpg]
 	format = ssh
+[init]
+	defaultBranch = main

@@ -2,6 +2,9 @@
 source ~/projects/dotfiles/zsh/.path
 source ~/projects/dotfiles/zsh/.aliases
 
+# GCP
+export USE_GKE_GCLOUD_AUTH_PLUGIN=True
+
 # FNM
 eval "$(fnm env --use-on-cd)"
 
