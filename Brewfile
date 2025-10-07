@@ -14,16 +14,11 @@ brew 'tree'
 cask "1password"
 cask "alfred"
 cask "docker"
+cask "docker-desktop"
 cask "google-cloud-sdk"
 cask "keepingyouawake"
 cask "linear-linear"
-cask "loom"
 cask "signal"
 cask "slack"
-cask "slite"
 cask "spotify"
 cask "visual-studio-code"
-cask "zoom"
-
-tap "garden-io/garden"
-brew 'garden-cli'

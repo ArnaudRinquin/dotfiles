@@ -32,8 +32,11 @@
 	updateRefs = true
 	autosquash = true
 [commit]
+	gpgsign = true
 	#gpgsign = true
 [gpg]
 	format = ssh
 [init]
 	defaultBranch = main
+[gpg "ssh"]
+	program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
