@@ -4,23 +4,27 @@
 	excludesfile = ~/.gitignore_global
 	editor = vim
 	ignorecase = false
+	pager = delta
 [user]
 	name = Arnaud Rinquin
 	email = rinquin.arnaud@gmail.com
-	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEylDEocVQhDmS5R/fIit8jNrOScCaty9ModJq62wjn7
+	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII1T48Ir4fSUjC1b2rtl8mwGZ14NQSVFp6GupNeXNhYW
 [alias]
 	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
  	rma = !sh -c \"git diff -z --name-only --diff-filter=D | xargs -0 git rm\"
 	undo-commit = reset --soft @^
 	cpr = pull-request -c
-	clrb = !sh -c \"git branch --merged | grep -v '*' | grep -v master | grep -v dev | xargs -n 1 git branch -d\"
+	clrb = !sh -c \"git branch --merged | grep -v '*' | grep -v main | grep -v dev | xargs -n 1 git branch -d\"
 	rd = !git fetch origin develop:develop && git rebase origin/develop
+	rem = "!git fetch origin main && git rebase origin/main"
+	wa = "!f() { git worktree add ../$(basename $(pwd))-$1 -b $1; }; f"
+	wc = "!f() { dir=../$(basename $(pwd))-$1; git worktree add $dir -b $1 && cd $dir && exec claude; }; f"
 [help]
 	autocorrect = 1
 [credential]
 	helper = osxkeychain
 [push]
-	default = matching
+	default = current
 	autoSetupRemote = true
 [pull]
 	rebase = true
@@ -40,3 +44,7 @@
 	defaultBranch = main
 [gpg "ssh"]
 	program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
+[delta]
+	navigate = true
+	line-numbers = true
+	side-by-side = false
