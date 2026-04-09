@@ -5,6 +5,8 @@ link:
 	@ln -s $(DIR)/.gitconfig ~
 	@ln -s $(DIR)/.gitignore_global ~
 	@ln -s $(DIR)/.hushlogin ~
+	@ln -s $(DIR)/zsh/.zshenv ~/.zshenv
+	@ln -s $(DIR)/tmux/tmux.conf ~/.tmux.conf
 
 .PHONY: zsh
 zsh:
