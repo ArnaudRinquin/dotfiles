@@ -11,3 +11,6 @@ export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 
 eval "$(fnm env --use-on-cd)"
 
+# Corepack: enable pnpm/yarn shims for the active node (once per version)
+if command -v corepack >/dev/null 2>&1 && ! command -v pnpm >/dev/null 2>&1; then corepack enable >/dev/null 2>&1; fi
+

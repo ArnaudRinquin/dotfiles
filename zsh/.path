@@ -10,5 +10,5 @@ export PATH=/usr/local/opt/ruby/bin:$PATH
 export PATH=$HOME/.bin:$PATH
 export PATH=$HOME/.local/bin:$PATH
 export PATH=/opt/homebrew/bin:$PATH
-export PATH=./bin:$PATH
-export PATH=./node_modules/.bin:$PATH
+# NOTE: never put relative dirs (./bin, ./node_modules/.bin) on PATH — a
+# malicious repo could shadow real commands. Use `pnpm exec` / direnv instead.

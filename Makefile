@@ -27,7 +27,7 @@ claude:
 zsh:
 	@echo "Installing zsh and oh-my-zsh"
 	@sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-	@echo "source ~/projects/dotfiles/zsh/.init" >> ~/.zshrc
+	@grep -qF "dotfiles/zsh/.init" ~/.zshrc 2>/dev/null || echo "source ~/projects/dotfiles/zsh/.init" >> ~/.zshrc
 
 .PHONY: brew
 brew:
