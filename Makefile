@@ -7,6 +7,8 @@ link:
 	@ln -s $(DIR)/.hushlogin ~
 	@ln -s $(DIR)/zsh/.zshenv ~/.zshenv
 	@ln -s $(DIR)/tmux/tmux.conf ~/.tmux.conf
+	@mkdir -p ~/.config
+	@ln -s $(DIR)/ghostty ~/.config/ghostty
 
 .PHONY: zsh
 zsh:

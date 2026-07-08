@@ -1,0 +1,7 @@
+theme = Catppuccin Macchiato
+
+# Cursor trail shader (ShaderToy-style GLSL)
+custom-shader = shaders/cursor.glsl
+
+# Map ctrl+` to tmux prefix (ctrl+b)
+keybind = ctrl+grave_accent=text:\x02
