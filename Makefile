@@ -15,6 +15,8 @@ link:
 	@ln -s $(DIR)/claude/skill-lock.json ~/.agents/.skill-lock.json
 	@mkdir -p ~/.claude/skills
 	@for s in $(DIR)/claude/skills/*/; do ln -sfn "$$s" ~/.claude/skills/$$(basename "$$s"); done
+	# opt-in flag read by the i-have-adhd plugin's SessionStart hook; contents irrelevant
+	@touch ~/.claude/.i-have-adhd-always
 
 .PHONY: claude
 claude:
