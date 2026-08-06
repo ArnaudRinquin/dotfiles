@@ -1,20 +1,39 @@
 ---
-name: wtc
-description: Spin off a parallel worktree+tmux+claude session for a new task while staying in the current one. Creates a Linear ticket as a sub-issue of the current ticket (same project/milestone, assigned to user, Todo status), then runs `g wtc <branch> '/go linear'` to spawn the new worktree, tmux window, and a fresh claude pane preloaded with `/go linear`. Use when user says "/wtc <description>", "/wtc this" (refers to something discussed earlier in the conversation), spots an issue to work on in parallel, or wants to track a side-task without losing the current context. Supports `--no-linear <description>` to skip ticket creation and use a slugified branch + the description as direct prompt, and `/wtc TSH-XXXX` to open a worktree on an existing ticket.
+name: spawn
+description: Spin off a parallel worktree+tmux+claude session for a new task while staying in the current one. Creates a Linear ticket as a sub-issue of the current ticket (same project/milestone, assigned to user, Todo status), then runs `wt spawn` to create the new worktree, tmux window, and a fresh claude pane preloaded with `/go linear`. Use when user says "/spawn <description>", "/spawn this" (refers to something discussed earlier in the conversation), "spawn one for X", spots an issue to work on in parallel, or wants to track a side-task without losing the current context. Supports `--no-linear <description>` to skip ticket creation and use a slugified branch + the description as direct prompt, and `/spawn TSH-XXXX` to open a worktree on an existing ticket. Formerly named `wtc` — treat `/wtc` as an alias.
 ---
 
-# /wtc
+# /spawn
 
 Spin off a parallel worktree+tmux+claude from the current one for a new task. The current session keeps running; the new one opens in a fresh tmux window with its own claude pane preloaded with `/go linear`.
+
+## The spawn command
+
+Every mode below ends in the same call — the `spawn` worktrunk alias, no `g wtc`:
+
+```sh
+wt -C ~/projects/teetsh/monorepo spawn --name='<branch>' --prompt='<prompt>'
+```
+
+The alias lives in `~/.config/worktrunk/config.toml` and expands to a fetch plus
+`WT_EXTRA=<prompt> wt switch -c --base origin/<default> --no-cd <branch>`. Inspect it
+with `wt config alias show spawn`, or preview an expansion without running it:
+`wt config alias dry-run spawn -- --name=x --prompt=y`.
+
+- Values are shell-escaped by the template engine, so prompts may contain quotes,
+  apostrophes and `$` safely.
+- Must run from inside tmux (`$TMUX` set) or the `setup-tmux` pre-start hook exits
+  silently and you get a worktree with no window.
+- Requires worktrunk ≥ 0.60 for top-level alias invocation and `--key=value` binding.
 
 ## Usage
 
 ```
-/wtc <description>                        # create Linear ticket + worktree
-/wtc this                                 # description = recent conversation context
-/wtc                                      # same as `/wtc this`
-/wtc --no-linear <description>            # no Linear, slugify into branch
-/wtc TSH-1234                             # existing ticket → open worktree
+/spawn <description>                      # create Linear ticket + worktree
+/spawn this                               # description = recent conversation context
+/spawn                                    # same as `/spawn this`
+/spawn --no-linear <description>          # no Linear, slugify into branch
+/spawn TSH-1234                           # existing ticket → open worktree
 ```
 
 **Resolving `this` / no-arg / deictic references** ("this", "it", "that"): use the
@@ -43,15 +62,16 @@ the user to describe it.
    Milestone: <inherited or "none">
    Assignee:  me
    Status:    Todo
-   Then run: g wtc <expected branchName> '/go linear'
+   Then run: wt spawn --name=<expected branchName> --prompt='/go linear'
    ```
    Options: Proceed | Edit title | Skip Linear (fall through to `--no-linear`) | Cancel.
 
 6. **Create ticket** with `mcp__linear__save_issue`. Capture `id`, `identifier` (TSH-XXXX), and `branchName` from the response.
 
-7. **Run alias** via Bash, backgrounded (worktree creation takes minutes due to `pnpm install`):
-   ```
-   g wtc <branchName> '/go linear' > /tmp/wtc-<TSH-XXXX>.log 2>&1
+7. **Spawn** via Bash, backgrounded (worktree creation takes minutes due to `pnpm install`):
+   ```sh
+   wt -C ~/projects/teetsh/monorepo spawn --name='<branchName>' --prompt='/go linear' \
+     > /tmp/wtc-<TSH-XXXX>.log 2>&1
    ```
 
 8. Report: ticket URL, worktree path, "new tmux window appearing — claude pane will load `/go linear` once setup completes".
@@ -60,17 +80,17 @@ the user to describe it.
 
 1. Slugify description → lowercase, hyphens, alphanumerics only, cap ~40 chars. Example: `"fix the broken modal"` → `fix-the-broken-modal`.
 2. Confirm branch name with user (let them edit). Show the full command that will run.
-3. `g wtc <branch> "<description>"` — the description doubles as the claude prompt (verbatim, no `/go linear`).
+3. Run the spawn command with `--prompt="<description>"` — the description doubles as the claude prompt (verbatim, no `/go linear`).
 
-## Existing ticket mode (`/wtc TSH-1234`)
+## Existing ticket mode (`/spawn TSH-1234`)
 
 1. `mcp__linear__get_issue` for the ID → get `branchName`.
 2. Confirm.
-3. `g wtc <branchName> '/go linear'`.
+3. Run the spawn command with `--prompt='/go linear'`.
 
 ## Constraints
 
-- The `g wtc` alias hardcodes `-c` (create branch). If the branch already exists, `wt switch` errors. Pre-check via `wt list --branches | grep -i <branch>`; if it exists, ask whether to switch to the existing worktree (manually run `wt switch <branch>`) or pick a new name.
+- The `spawn` alias hardcodes `-c` (create branch). If the branch already exists, `wt switch -c` errors. Pre-check via `wt list --branches | grep -i <branch>`; if it exists, ask whether to switch to the existing worktree (manually run `wt switch <branch>`) or pick a new name.
 - Must be inside a tmux session (the layout hook checks `$TMUX`). If not, warn and abort.
 - This action has visible side effects (new Linear ticket, new worktree, new tmux window). Always confirm via `AskUserQuestion` before firing — even in auto mode.
 - After the alias runs, the original tmux pane keeps running. The user can switch to the new window manually (tmux usually selects it automatically per layout).
@@ -78,4 +98,4 @@ the user to describe it.
 ## Caveats
 
 - The `WT_EXTRA` → claude-prompt forwarding requires the project's `setup-tmux` to pass `$4` to layouts. If the new worktree's base branch predates that change, the prompt won't reach claude — the pane still opens, just without the preloaded prompt. Mention this to the user if you detect that.
-- Default parent is the current ticket (sub-issue). Override to sibling (same parent as current) only if the user explicitly says so ("/wtc as a sibling", "parallel to this", etc.).
+- Default parent is the current ticket (sub-issue). Override to sibling (same parent as current) only if the user explicitly says so ("/spawn as a sibling", "parallel to this", etc.).

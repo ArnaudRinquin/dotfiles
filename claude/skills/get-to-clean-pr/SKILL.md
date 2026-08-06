@@ -16,7 +16,7 @@ Personal fork of the monorepo's `create-pr-new` (left untouched there for the te
 - **CI fix attempts before asking**: 2
 - **Review iterations before asking**: 2
 - **Review poll interval**: `sleep 20` (max 40 polls ≈ 13min)
-- **Review bot author**: `claude`
+- **Review bot authors**: `claude` AND `brutus-teetsh` — this repo runs both. Match `test("claude|brutus"; "i")`, never an equality check: the REST API reports `brutus-teetsh[bot]` while `gh pr view` reports `brutus-teetsh`.
 - **E2e test cap**: ~5 most relevant files
 
 ## Phase 0 — Risk assessment + plan (agreed with user)
@@ -107,6 +107,8 @@ gh pr comment <PR> --body "/e2e-workspace <impacted files>"
 
 Skip if no related tests.
 
+**Confirm the run actually started.** `gh run list --branch <b>` omits `issue_comment`-triggered runs, so an e2e-workspace run is invisible there — use `gh run list --workflow=e2e-workspace-on-demand.yml`. Every unrelated PR comment also spawns its own run of that workflow which correctly no-ops, so a `skipped` conclusion in the history is not evidence your e2e comment failed. Check for a run whose conclusion is not `skipped`; if there's none a minute after commenting, re-post the comment.
+
 ## Phase 5 — CI loop
 
 If Phase 4 posted `/e2e` comments, `sleep 30` first so the runner has time to queue the e2e jobs — otherwise `--watch` may declare CI clean before e2e runs exist.
@@ -136,10 +138,16 @@ After **2** failed fix attempts → `AskUserQuestion` continue or stop.
 
 1. Record timestamp: `date -u +%Y-%m-%dT%H:%M:%SZ`
 2. If no review auto-triggered on PR open → `gh pr comment <PR> --body "@claude review this PR"`
+
+**Brutus does not behave like the claude reviewer — read this before waiting on it:**
+- `brutus-code-review.yml` is `on: pull_request: types: [opened, ready_for_review]`. **No `synchronize`**, so pushing fixes leaves the old verdict standing and nothing is queued.
+- An `@brutus-teetsh` comment does **nothing** — there is no `issue_comment` trigger. Waiting on one is waiting forever.
+- Re-review is `gh workflow run brutus-code-review.yml -f pr_number=<N>`, the only re-trigger.
+- Its workflow going green means *the webhook was accepted*, not that a review was posted. Brutus runs async and flips a `brutus-review` commit status later. Green workflow + no comment + status still `pending` = silent finish → dispatch again. Watch `repos/:o/:r/commits/:sha/statuses` (context `brutus-review`), not the workflow conclusion.
 3. Poll for a `claude`-authored comment created after the timestamp:
 
 ```bash
-gh pr view <PR> --json comments --jq '[.comments[] | select(.author.login == "claude" and .createdAt > "<TS>") | {createdAt, body}] | last'
+gh pr view <PR> --json comments --jq '[.comments[] | select((.author.login | test("claude|brutus"; "i")) and .createdAt > "<TS>") | {createdAt, body}] | last'
 ```
 
 Initial reply is a "working" message. Keep polling until:

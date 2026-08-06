@@ -51,7 +51,7 @@ A real user, not a tester — fresh context so it can't rubber-stamp its own wor
 - Evidence is the deliverable: screenshots per step, response bodies, DB state. A bare "no issues found" is a failed run — re-run.
 - UX issues found → report; the main session fixes via the Frontend agent (max 2 iterations).
 
-Output: `## UX Validation` — flow summary, evidence paths, issues found.
+Output: `## UX Validation` — flow summary, evidence paths, issues found / `## Blind Spots` — what this run couldn't reach: data it lacked, paths it didn't mutate.
 
 ## QA (general-purpose + agent-browser, Phase 7)
 

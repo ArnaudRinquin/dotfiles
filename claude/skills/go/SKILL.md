@@ -88,7 +88,7 @@ Spawn the **QA** agent ([agents.md](agents.md)). Not the golden path — that's 
 
 Spawn the **Dogfooder** ([agents.md](agents.md)) — golden path as a real user, concrete evidence required. UX issues → fix via the Frontend agent (max 2 iterations).
 
-Then the human half: tell Arnaud where the feature is running and invite him to try it. Proceed only on his OK (or an explicit "skip").
+Then the human half: tell Arnaud where the feature is running, and hand him 3–5 ranked scenarios unprompted — never a bare "go try it". Rank by **blind spot**: what the suite and the agent passes structurally can't reach — mutations tests only assert are *absent*, data shapes the seed lacks, the biggest logic/content block no test touches, real-user-scale vs fixture-scale, anything rendered. Each scenario says what to do and what counts as a failure. Proceed only on his OK (or an explicit "skip").
 
 ### Phase 9 — PR
 
