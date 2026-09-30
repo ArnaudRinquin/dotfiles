@@ -68,6 +68,8 @@ Present the final plan (answers folded in). Ask: "Approved to implement? (yes / 
 
 Spawn **Backend** then **Frontend** ([agents.md](agents.md)), each with the Architect brief + the approved plan. Full-stack: pass Backend's endpoint shapes to Frontend.
 
+Visible UI change? Before the first edit, capture the affected screens into `~/.cache/pr-screenshots/<branch>/before/` (see `/pr-screenshots`) — it's the cheapest moment to get a BEFORE.
+
 ### Phase 5 — Test
 
 Spawn the **Tester** ([agents.md](agents.md)). No untested code path; user flows get e2e coverage.
@@ -93,6 +95,8 @@ Then the human half: tell Arnaud where the feature is running, and hand him 3–
 ### Phase 9 — PR
 
 `/get-to-clean-pr` handles risk assessment, commit split, push, PR open, CI loop, @claude review loop, merge queue. Pass the Phase 3 plan verbatim into its Phase 0.
+
+Optional, when sensible, once the PR is open — `/pr-decisions` if a human will review it (the Phase 3 plan is its best *why* source); `/pr-screenshots` if the UI visibly changed (reuse Phase 7–8 captures as AFTER).
 
 ## Failure handling
 

@@ -89,6 +89,8 @@ Examples: `feat(app): Bulk student import [TSH-2500]`, `fix(api): Prevent duplic
 
 First check if a PR already exists for this branch: `gh pr view --json number --jq .number 2>/dev/null`. If found, reuse it and skip creation. Otherwise `gh pr create` — always ready for review (gets @claude review immediately). Draft only if Arnaud explicitly asked for one this run.
 
+Optional, when sensible: `/pr-decisions` for MEDIUM/HIGH risk or when a human reviewer is expected; `/pr-screenshots` when the diff visibly changes `app/`, `admin/` or `website/` UI. Skip both for LOW risk / non-UI changes.
+
 ## Phase 4 — Trigger impacted e2e tests
 
 Use the e2e list from the Phase 0 plan as the source of truth. If the plan says "none", skip. Otherwise re-verify against `gh pr diff <PR> --name-only` only if the working tree changed since the plan was agreed.
