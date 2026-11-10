@@ -38,23 +38,39 @@ Three moments belong to Arnaud, not the agents. Agents do the legwork first; the
 - **Phase 3 — Approval**: explicit go/no-go on the final plan.
 - **Phase 8 — Dogfood**: the agent dogfoods first, then Arnaud is invited to try the feature himself before the PR opens.
 
+### Gate recap
+
+Arnaud reads a plan cold, after a long agent run he did not watch, often hours after writing the ticket. Every plan shown to him (Phase 1 draft, Phase 3 final) opens with this recap, before any file, function or step:
+
+- **Problem** — ticket ID + title, then the symptom as the user lived it, 1–2 plain sentences (what the teacher saw, not what the code does).
+- **Goal** — what "fixed" looks like, one sentence.
+- **Found** — what the investigation confirmed and what it refuted, each with its evidence. State the ticket's hypothesis before saying it was refuted. Anything that changes the ticket's scope goes here.
+
+Plain words, no message indexes, internal names or file paths: those belong to the plan below. A status line posted earlier in the run does not count; he may not have read it. Self-check: would the recap alone tell someone who never opened the ticket what is broken and why this plan fixes it?
+
 ## Pipeline
 
-### Phase 0 — Rename tmux window
+### Phase 0 — Rename the terminal tab
 
-If `$TMUX` is set and a ticket ID is known, rename via `$TMUX_PANE` (not bare `rename-window` — drifts off-by-one when the user switched windows):
+If a ticket ID is known and `$ORCA_TERMINAL_HANDLE` is set (Orca terminal), rename the tab:
+
+```
+/Applications/Orca.app/Contents/Resources/bin/orca terminal rename --terminal "$ORCA_TERMINAL_HANDLE" --title "TSH-2648 golden evals" --json
+```
+
+Else if `$TMUX` is set, rename via `$TMUX_PANE` (not bare `rename-window` — drifts off-by-one when the user switched windows):
 
 ```
 tmux rename-window -t "$TMUX_PANE" "TSH-2648 golden evals"
 ```
 
-Title ≤20 chars. Skip silently if not in tmux or no ticket ID.
+Title ≤20 chars. Skip silently if in neither or no ticket ID.
 
 ### Phase 1 — Plan
 
 1. Detect feature type from the description (the Architect may override after reading code): API/Go/database/migrations → Backend; components/pages/UI/React/styling → Frontend; unclear → full-stack.
 2. Spawn the **Architect** ([agents.md](agents.md)) → context brief.
-3. Draft the plan: scope, files, endpoints/components, test strategy, risks. No code yet.
+3. Draft the plan: the gate recap first, then scope, files, endpoints/components, test strategy, risks. No code yet.
 
 ### Phase 2 — Grill 🧑
 
@@ -62,7 +78,7 @@ Hand the plan to `/grill-me`. One question at a time with a recommended answer; 
 
 ### Phase 3 — Approval gate 🧑
 
-Present the final plan (answers folded in). Ask: "Approved to implement? (yes / changes needed)". Any "changes needed" → revise, re-confirm.
+Present the gate recap again in full (updated with what the grill settled, never "as above"), then the final plan (answers folded in). Ask: "Approved to implement? (yes / changes needed)". Any "changes needed" → revise, re-confirm.
 
 ### Phase 4 — Implement
 
@@ -94,7 +110,7 @@ Then the human half: tell Arnaud where the feature is running, and hand him 3–
 
 ### Phase 9 — PR
 
-`/get-to-clean-pr` handles risk assessment, commit split, push, PR open, CI loop, @claude review loop, merge queue. Pass the Phase 3 plan verbatim into its Phase 0.
+`/get-to-clean-pr` handles risk assessment, commit split, push, PR open, CI loop, @claude review loop, merge queue. Pass the Phase 3 gate recap and plan verbatim into its Phase 0; the recap is the PR body's *why*.
 
 Optional, when sensible, once the PR is open — `/pr-decisions` if a human will review it (the Phase 3 plan is its best *why* source); `/pr-screenshots` if the UI visibly changed (reuse Phase 7–8 captures as AFTER).
 
