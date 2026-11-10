@@ -34,8 +34,17 @@ Output a concise assessment:
 - Risk: LOW | MEDIUM | HIGH
 - Rationale: <1-2 lines — blast radius, reversibility, test coverage>
 - Auto-merge on clean: YES | NO
-- E2e to trigger: <files or "none">
+- E2e impacted: <specs + why each, from the grep below; "none" only with the grep output that proves it>
+- E2e updated: <specs edited in this PR, or "none needed" + why>
 ```
+
+**E2e impact grep (MANDATORY, before the plan):** e2e breakage after merge happened (director table regroup, 11/2026) because the plan guessed "none". Never guess. For every changed UI file, collect what a spec could select on and grep `e2e-app/` (specs + `pageobjects/`) for each:
+- component/container + route names (`SuiviEnseignants`, `/direction/teachers`);
+- `data-testid`s, `aria-label`s, roles/headings removed, renamed or moved;
+- i18n keys changed AND their rendered French text (specs match `getByText('…')`);
+- table/list structure (columns removed or merged, rows grouped, `nth()`/`getByRole('row')` counts);
+- API routes/payloads changed (seeds via `request.post`).
+Any hit → that spec is impacted. Read it; if the change breaks its selectors or assertions, **update the spec in this PR** (own commit). Run the impacted specs locally against the worktree stack before pushing (see `e2e-app/AGENTS.md`); if the stack can't run, they go to `/e2e-workspace` in Phase 4 and must pass before merge.
 
 **Risk heuristics**:
 - LOW → docs, copy, styles, isolated component, tests only, infra no-op. Auto-merge OK.
@@ -93,12 +102,12 @@ Optional, when sensible: `/pr-decisions` for MEDIUM/HIGH risk or when a human re
 
 ## Phase 4 — Trigger impacted e2e tests
 
-Use the e2e list from the Phase 0 plan as the source of truth. If the plan says "none", skip. Otherwise re-verify against `gh pr diff <PR> --name-only` only if the working tree changed since the plan was agreed.
+Use the e2e list from the Phase 0 grep as the source of truth. Re-run the grep against `gh pr diff <PR> --name-only` whenever commits landed after the plan (review fixes change selectors too). "none" is allowed only when the grep returned no hits.
 
 - **Modified e2e specs** (`e2e-app/**/*.spec.ts` in diff) → trigger with `x3`
-- **Impacted e2e specs** → map changed source files to feature areas, cross-ref test names in `e2e-app/` + page objects in `e2e-app/pageobjects/`. Cap ~5.
+- **Impacted e2e specs** → every grep hit, plus specs named after the feature area (`director*.spec.ts` for `containers/Director/`). Cap ~5 only for loosely related specs; grep hits are never dropped.
 
-**Prefer `/e2e-workspace`** (runs PR app + API on a per-branch VM) over `/e2e app` (PR app vs recette API, flaky Netlify preview). See `e2e-app/CLAUDE.md`.
+**Prefer `/e2e-workspace`** (runs PR app + API on a per-branch VM) over `/e2e app` (PR app vs recette API, flaky Netlify preview). See `e2e-app/AGENTS.md`.
 
 **CRITICAL: batch into ≤2 comments.** Multiple separate comments cause concurrency conflicts (runs cancel → "0/0 passed").
 
@@ -107,7 +116,7 @@ gh pr comment <PR> --body "/e2e-workspace <modified files> x3"
 gh pr comment <PR> --body "/e2e-workspace <impacted files>"
 ```
 
-Skip if no related tests.
+Skip only if the grep returned no hits.
 
 **Confirm the run actually started.** `gh run list --branch <b>` omits `issue_comment`-triggered runs, so an e2e-workspace run is invisible there — use `gh run list --workflow=e2e-workspace-on-demand.yml`. Every unrelated PR comment also spawns its own run of that workflow which correctly no-ops, so a `skipped` conclusion in the history is not evidence your e2e comment failed. Check for a run whose conclusion is not `skipped`; if there's none a minute after commenting, re-post the comment.
 
@@ -177,6 +186,8 @@ After **2** review iterations → `AskUserQuestion` continue or stop.
 
 If review says "no critical", "no important" → CLEAN, continue to Phase 7.
 
+**Merge gate:** never `gh pr merge` (auto or manual, even on "ship it") while an impacted e2e run is missing, running or red. The PR's required checks don't include most e2e specs, so a green `gh pr checks` says nothing about them; check the e2e-workspace run's conclusion explicitly.
+
 ## Phase 7 — Merge queue or handoff
 
 If plan said **auto-merge: YES** and status is CLEAN:
@@ -205,7 +216,7 @@ Otherwise: leave for human merge. Print final summary.
 - [or "clean first pass"]
 
 ### E2E
-- [files triggered + results, or "none"]
+- [grep hits, specs updated, files triggered + results, or "none (grep: no hits)"]
 
 ### Files Modified During Loop
 - [...]

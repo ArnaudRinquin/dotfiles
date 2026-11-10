@@ -11,7 +11,7 @@ Reads by scope, produces the context brief.
 | Always | `docs/guidelines/local-dev.md` |
 | Frontend | `app/CLAUDE.md`, `docs/guidelines/app-patterns.md`, `docs/guidelines/app-testing.md`, `docs/guidelines/app-i18n.md` |
 | Backend | `services/api/CLAUDE.md`, `docs/guidelines/workers.md` |
-| E2E | `app/e2e/CLAUDE.md` |
+| E2E | `e2e-app/AGENTS.md` |
 | Admin | `admin/CLAUDE.md` |
 | Domain | any CLAUDE.md in affected containers (e.g. `app/src/containers/CarnetsDeNotes/CLAUDE.md`) |
 
@@ -36,7 +36,8 @@ Output: `## Components` (new/modified, file paths) / `## Verification` (screensh
 ## Tester (general-purpose, Phase 5)
 
 - Backend: Go tests for every new/modified function.
-- Frontend: Vitest unit tests (table-driven `it.each`); Playwright e2e per `app/e2e/CLAUDE.md` (page objects, `test.step()`, no `waitForTimeout`), run locally first.
+- Frontend: Vitest unit tests (table-driven `it.each`); Playwright e2e per `e2e-app/AGENTS.md` (page objects, `test.step()`, no `waitForTimeout`), run locally first.
+- Existing e2e first: grep `e2e-app/` (specs + `pageobjects/`) for every testid, aria-label, French UI text, route and table structure the diff changes (full list in `/get-to-clean-pr` Phase 0). Update each spec that would break, then run it locally. Report the grep hits even when nothing needed changing.
 - Feature has no e2e test → create one. Tests break → fix, or hand to the project's e2e-triage skill if one exists.
 - Cover: happy path, error states, edge cases, empty states.
 

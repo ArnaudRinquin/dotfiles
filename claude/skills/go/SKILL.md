@@ -88,7 +88,7 @@ Visible UI change? Before the first edit, capture the affected screens into `~/.
 
 ### Phase 5 — Test
 
-Spawn the **Tester** ([agents.md](agents.md)). No untested code path; user flows get e2e coverage.
+Spawn the **Tester** ([agents.md](agents.md)). No untested code path; user flows get e2e coverage. Existing e2e specs touching the changed UI are found by grep and updated in the same PR, never left for CI after merge to find.
 
 ### Phase 6 — Review
 
