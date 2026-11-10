@@ -11,9 +11,12 @@ Extract `<token>` — it identifies your Slack stream. Pass it as `threadTs` to 
 
 ## Protocol
 
-0. Rename tmux window (same convention as /go Phase 0): if `$TMUX` is set, `tmux rename-window -t "$TMUX_PANE" "slack: <short task slug>"` (≤30 chars, e.g. `slack: filter prog templates`). Use the ticket ID instead if the task names one. Skip silently if not in tmux.
+0. Rename the tab/window (same convention as /go Phase 0) with a `slack: <short task slug>` label (≤30 chars, e.g. `slack: filter prog templates`); use the ticket ID instead if the task names one. Orca first, then herdr, then tmux; skip silently if in none:
+   - `$ORCA_TERMINAL_HANDLE` set → `/Applications/Orca.app/Contents/Resources/bin/orca terminal rename --terminal "$ORCA_TERMINAL_HANDLE" --title "slack: <slug>" --json`
+   - else `$HERDR_TAB_ID` set → `herdr tab rename "$HERDR_TAB_ID" "slack: <slug>"`
+   - else `$TMUX` set → `tmux rename-window -t "$TMUX_PANE" "slack: <slug>"`
 1. Immediately, in this order:
-   - `register_job({threadTs, cwd: <pwd>, tmuxPane: $TMUX_PANE, pid: <your pid>, branch: <git branch>})` — this is how follow-up Slack mentions get routed INTO this session instead of spawning a duplicate job. Never skip it.
+   - `register_job({threadTs, cwd: <pwd>, paneId: $ORCA_TERMINAL_HANDLE, else $HERDR_PANE_ID, else $TMUX_PANE, pid: <your pid>, branch: <git branch>})` — this is how follow-up Slack mentions get routed INTO this session instead of spawning a duplicate job. Never skip it. (`paneId` is only a hint — the bridge verifies it against `cwd` — so send whichever is set and omit it if neither is.)
    - `thinking_step({threadTs, title: "Understanding the task", status: "in_progress"})`.
 2. Run the task: treat `<task description>` as `/go <task description>` (full pipeline). Skip `/grill-me` and user-approval gates — nobody is watching the terminal; make sensible calls and note them in the final summary.
 3. At each real milestone (plan done, implementation, tests, PR), update the checklist: mark the previous step `complete`, add the next as `in_progress`. Short titles ("Planning", "Implementing", "Running tests", "Opening PR"). Use `set_status` for the grey "is …" line during long stretches.
