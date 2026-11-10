@@ -14,6 +14,10 @@ You were started from Arnaud's personal Linear workspace. Args:
 
 All Linear access goes through the `slack-stream` MCP (http://127.0.0.1:8365/mcp). Do NOT use the `claude.ai Linear` connector or `orca linear`: they are logged into the Teetsh workspace, the wrong one.
 
+No `mcp__slack-stream__linear_*` tools in your session (it started while the bridge was down)? Same tools from a shell, through the running bridge: `bun ~/projects/slack-to-laptop/scripts/linear.ts <tool> '<json args>'` (no arguments lists them).
+
+Lane not started from Linear (an existing worktree being moved to a Linear project)? Use `linear_adopt({project, cwd, paneId, branch})` instead of `linear_register`.
+
 ## Boot (in this order)
 
 1. `linear_register({lane, cwd: <pwd>, paneId: $ORCA_TERMINAL_HANDLE, branch})`. Never skip: it routes follow-ups to you and creates the "Open in Orca" link.
@@ -37,7 +41,7 @@ Issues are your lane's tracking; keep them true as you go, via `linear_graphql`.
 **You do move issue statuses here.** The global rule "never update Linear issue status manually" is about the Teetsh workspace and its automations. In this personal workspace you own the status of your lane's issues: move one to In Progress when you start it and to Done when its work is finished and verified. Two exceptions: if an issue has a linked PR, leave In Review / Done to the GitHub integration; and see "Waiting for agent" below. Say in your `response` which issues you moved.
 
 - State ids: `query{ team(id:"RBD"){ id states{ nodes{ id name type } } } }`
-- Create: `mutation($i:IssueCreateInput!){ issueCreate(input:$i){ issue{ identifier url } } }` with `{teamId, projectId, title, description, stateId}`
+- Create: `linear_issue_create({team, project, title, description, labels, state})` (names, not ids; `linear_issue_search` first)
 - Move: `mutation($id:String!,$i:IssueUpdateInput!){ issueUpdate(id:$id,input:$i){ success } }` with `{stateId}`
 - Checkpoint (CI green, hand-over ready, merged, blocked): `mutation($i:ProjectUpdateCreateInput!){ projectUpdateCreate(input:$i){ success } }` with `{projectId, body, health}` (`onTrack` | `atRisk` | `offTrack`). Body: where the lane stands, what is next, what you need from Arnaud.
 
