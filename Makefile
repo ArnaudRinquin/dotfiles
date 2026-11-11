@@ -15,8 +15,6 @@ link:
 	@ln -s $(DIR)/claude/skill-lock.json ~/.agents/.skill-lock.json
 	@mkdir -p ~/.claude/skills
 	@for s in $(DIR)/claude/skills/*/; do ln -sfn "$$s" ~/.claude/skills/$$(basename "$$s"); done
-	# opt-in flag read by the i-have-adhd plugin's SessionStart hook; contents irrelevant
-	@touch ~/.claude/.i-have-adhd-always
 
 .PHONY: claude
 claude:
@@ -26,6 +24,7 @@ claude:
 	npx --yes skills add pbakaus/impeccable --global --skill "adapt,animate,arrange,audit,bolder,clarify,colorize,critique,delight,distill,extract,frontend-design,harden,normalize,onboard,optimize,overdrive,polish,quieter,teach-impeccable,typeset" -y
 	npx --yes skills add mattpocock/skills --global --skill "grill-me,grill-with-docs,tdd,write-a-skill,writing-great-skills" -y
 	npx --yes skills add vercel-labs/agent-skills --global --skill "vercel-composition-patterns" -y
+	npx --yes skills add ArnaudRinquin/laptop-bridge --global --skill "slack-ta,linear-ta" -y
 
 .PHONY: zsh
 zsh:

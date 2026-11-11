@@ -57,3 +57,6 @@ batch
 node_modules
 .bundle
 .rake_tasks
+
+# Per-worktree feature demo recordings #
+/demos/

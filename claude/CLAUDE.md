@@ -29,3 +29,5 @@ Before saving any auto-memory entry, ALL three must be true:
 - "Did this take real debugging effort, a correction, or surprise to discover?" → YES
 
 If any answer fails, do not save. Tighter than (and additive to) the harness's default auto-memory exclusions.
+
+Write memory files, MEMORY.md, plans and reports with the Write/Edit tools only, never Bash (heredocs, `cat >`, `echo >>`, python): shell writes there trigger permission prompts.
