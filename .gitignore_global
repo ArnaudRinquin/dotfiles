@@ -60,3 +60,6 @@ node_modules
 
 # Per-worktree feature demo recordings #
 /demos/
+
+# 1Password shell plugins (per-directory config)
+.op/
