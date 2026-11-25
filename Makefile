@@ -14,7 +14,7 @@ link:
 	@ln -s $(DIR)/claude/CLAUDE.md ~/.claude/CLAUDE.md
 	@ln -s $(DIR)/claude/skill-lock.json ~/.agents/.skill-lock.json
 	@mkdir -p ~/.claude/skills
-	@for s in $(DIR)/claude/skills/*/; do ln -sfn "$$s" ~/.claude/skills/$$(basename "$$s"); done
+	@for s in $(DIR)/.agents/skills/*/; do ln -sfn "$$s" ~/.claude/skills/$$(basename "$$s"); done
 
 .PHONY: claude
 claude:
